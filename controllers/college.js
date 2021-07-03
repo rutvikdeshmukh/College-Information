@@ -37,7 +37,7 @@ module.exports.create_college = async (req, res) => {
   newRecord.geometry = geodata.body.features[0].geometry;
   newRecord.author = req.user;
   const record = await newRecord.save();
-  req.flash("success", "Account  has been created successfully");
+  req.flash("success", "Account Created Successfully");
   return res.redirect(`/college/${record._id}`);
 };
 module.exports.edit_college = async (req, res) => {
@@ -68,11 +68,11 @@ module.exports.update_college = async (req, res) => {
       $pull: { image: { filename: { $in: req.body.deleteImages } } },
     });
   }
-  req.flash("success", "college information updated sucessfully");
+  req.flash("success", "Information Updated Successfully");
   return res.redirect(`/college/${id}`);
 };
 module.exports.delete_college = async (req, res) => {
   await collegeModel.findByIdAndDelete(req.params.id);
-  req.flash("error", "college is deleted successfully");
+  req.flash("error", "College Information Deleted successfully");
   return res.redirect("/college");
 };

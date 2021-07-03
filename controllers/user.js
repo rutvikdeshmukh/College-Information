@@ -24,15 +24,15 @@ module.exports.user_login = async (req, res) => {
   return res.render("user/login.ejs");
 };
 
-module.exports.post_login = (req, res) => {
+module.exports.post_login = async (req, res, next) => {
   const returnUrl = req.session.ReturnTo || "/college";
   delete req.session.ReturnTo;
-  req.flash("success", "welcome back");
+  req.flash("success", "Welcome Back");
   return res.redirect(returnUrl);
   // console.log("this is data");
 };
-module.exports.user_logout = (req, res) => {
+module.exports.user_logout = async (req, res, next) => {
   req.logOut();
-  req.flash("success", "successfully logout");
+  req.flash("success", "successfully Logout");
   return res.redirect("/college");
 };
