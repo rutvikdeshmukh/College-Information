@@ -31,7 +31,9 @@ module.exports.post_login = (req, res) => {
   res.redirect(returnUrl);
 };
 module.exports.user_logout = (req, res) => {
-  req.logOut();
-  req.flash("success", "successfully logout");
+  if (req.user) {
+    req.logOut();
+    req.flash("success", "successfully logout");
+  }
   res.redirect("/college");
 };
