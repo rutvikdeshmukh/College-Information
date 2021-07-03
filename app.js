@@ -12,8 +12,8 @@ const ejs_mate = require("ejs-mate");
 const UserModel = require("./model/user");
 const session = require("express-session");
 const MongoDbStore = require("connect-mongo");
-const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/studentDatabase";
-const secret = process.env.SECRET || "rutvikdeshmukhcollegeinformation";
+const dbUrl = process.env.DB_URL;
+const secret = process.env.SECRET;
 const session_config = {
   secret,
   resave: false,
@@ -87,7 +87,7 @@ app.use((err, req, res, next) => {
   const message = err.message;
   res.render("student/error.ejs", { message });
 });
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`listening on the port ${port}`);
 });
