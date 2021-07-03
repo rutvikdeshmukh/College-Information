@@ -38,7 +38,7 @@ module.exports.create_college = async (req, res, next) => {
       path: element.path,
       filename: element.filename,
     }));
-    record.geometry = geodata.body.features[0].geometry;
+    newRecord.geometry = geodata.body.features[0].geometry;
     newRecord.author = req.user;
     const record = await newRecord.save();
     req.flash("success", "College Information Added Successfully");
