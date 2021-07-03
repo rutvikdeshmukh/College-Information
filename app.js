@@ -87,7 +87,14 @@ app.use((err, req, res, next) => {
   const message = err.message;
   res.render("student/error.ejs", { message });
 });
-const port = process.env.PORT;
-app.listen(port, () => {
-  console.log(`listening on the port ${port}`);
+// const port = process.env.PORT;
+// app.listen(port, () => {
+//   console.log(`listening on the port ${port}`);
+// });
+
+app.set("port", process.env.PORT || 5000);
+
+// Start node server
+app.listen(app.get("port"), function () {
+  console.log("Node server is running on port " + app.get("port"));
 });
