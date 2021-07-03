@@ -8,9 +8,11 @@
 <% for(let record of findData) { %>
 <div class="card" mb-3>
   <div class="row">
+    <%if(record.image.length) {%>
     <div class="col-md-4">
       <img src="<%=record.image[0].path%>" class="d-block w-100" alt="" />
     </div>
+    <%}%>
     <div class="col-md-8">
       <div class="card-body">
         <h5 class="card-title"><%= record.college %></h5>

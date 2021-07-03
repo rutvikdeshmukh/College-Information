@@ -24,61 +24,58 @@ module.exports.show_college = async (req, res, next) => {
   return res.render("student/show.ejs", { oneRecord });
 };
 module.exports.create_college = async (req, res, next) => {
-  try {
-    const geodata = await geocoder
-      .forwardGeocode({
-        query: req.body.student.location,
-        limit: 1,
-      })
-      .send();
-    const newRecord = new collegeModel(req.body.student);
-    newRecord.image = req.files.map((element) => ({
-      path: element.path,
-      filename: element.filename,
-    }));
-    newRecord.geometry = geodata.body.features[0].geometry;
-    newRecord.author = req.user;
-    const record = await newRecord.save();
-    req.flash("success", "College Information Added Successfully");
-    return res.redirect(`/college/${record._id}`);
-  } catch (e) {
-    next(new ExpressError("Invalid location", 404));
-  }
+  const geodata = await geocoder
+    .forwardGeocode({
+      query: req.body.student.location,
+      limit: 1,
+    })
+    .send();
+  const newRecord = new collegeModel(req.body.student);
+  newRecord.image = req.files.map((element) => ({
+    path: element.path,
+    filename: element.filename,
+  }));
+  newRecord.geometry = geodata.body.features[0].geometry;
+  newRecord.author = req.user;
+  const record = await newRecord.save();
+  req.flash("success", "College Information Added Successfully");
+  return res.redirect(`/college/${record._id}`);
 };
 module.exports.edit_college = async (req, res, next) => {
   const record = await collegeModel.findById(req.params.id);
   return res.render("student/editForm.ejs", { record });
 };
 module.exports.update_college = async (req, res, next) => {
-  try {
-    const geodata = await geocoder
-      .forwardGeocode({
-        query: req.body.student.location,
-        limit: 1,
-      })
-      .send();
-    const { id } = req.params;
+  const { id } = req.params;
+  const record = await collegeModel.findByIdAndUpdate(id, req.body.student);
+  const geodata = await geocoder
+    .forwardGeocode({
+      query: req.body.student.location,
+      limit: 1,
+    })
+    .send();
+  record.geometry = geodata.body.features[0].geometry;
+  if (req.files.length) {
     const image = req.files.map((element) => ({
       path: element.path,
       filename: element.filename,
     }));
-    const record = await collegeModel.findByIdAndUpdate(id, req.body.student);
     record.image.push(...image);
-    record.geometry = geodata.body.features[0].geometry;
-    await record.save();
-    if (req.body.deleteImages) {
-      for (let filename of req.body.deleteImages) {
-        cloudinary.uploader.destroy(filename);
-      }
-      const data = await collegeModel.updateOne({
-        $pull: { image: { filename: { $in: req.body.deleteImages } } },
-      });
-    }
-    req.flash("success", "Information Updated Successfully");
-    return res.redirect(`/college/${id}`);
-  } catch (e) {
-    next(new ExpressError("Invalid location", 404));
   }
+  await record.save();
+  console.log(req.body.deleteImages);
+  if (req.body.deleteImages) {
+    for (let filename of req.body.deleteImages) {
+      cloudinary.uploader.destroy(filename);
+    }
+
+    const data = await collegeModel.updateOne({
+      $pull: { image: { filename: { $in: req.body.deleteImages } } },
+    });
+  }
+
+  req.flash("success", "Information Updated Successfully");
+  return res.redirect(`/college/${id}`);
 };
 module.exports.delete_college = async (req, res, next) => {
   await collegeModel.findByIdAndDelete(req.params.id);
