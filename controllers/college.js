@@ -39,7 +39,7 @@ module.exports.create_college = async (req, res, next) => {
     newRecord.geometry = geodata.body.features[0].geometry;
     newRecord.author = req.user;
     const record = await newRecord.save();
-    req.flash("success", "Account Created Successfully");
+    req.flash("success", "College Information Added Successfully");
     return res.redirect(`/college/${record._id}`);
   } catch (e) {
     next(new ExpressError("Invalid location", 404));

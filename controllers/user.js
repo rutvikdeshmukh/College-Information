@@ -11,7 +11,7 @@ module.exports.post_registration = async (req, res, next) => {
       if (err) {
         return next(err);
       }
-      req.flash("success", "successfully created the account");
+      req.flash("success", "Account Created Successfully");
       return res.redirect("/college");
     });
   } catch (e) {
