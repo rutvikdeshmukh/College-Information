@@ -4,36 +4,42 @@
 <div class="mb-3">
   <a href="/college/new"> <b>Add New College</b></a>
 </div>
+<div class="mb-3">
+  <% for(let record of findData) { %>
+  <div class="card">
+    <div class="row">
+      <%if(record.image.length) {%>
+      <div class="col-md-4">
+        <img
+          src="<%=record.image[0].path%>"
+          class="img-fluid img-thumbnail mt-3 ml-2"
+          alt=""
+        />
+      </div>
+      <%}%>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title"><%= record.college %></h5>
+          <p class="card-text">
+            <small class="text-muted"><%= record.location%></small>
+          </p>
+          <p class="card-text">
+            <small class="text-muted"><%= record.description%></small>
+          </p>
 
-<% for(let record of findData) { %>
-<div class="card" mb-3>
-  <div class="row">
-    <%if(record.image.length) {%>
-    <div class="col-md-4">
-      <img src="<%=record.image[0].path%>" class="img-fluid" alt="" />
-    </div>
-    <%}%>
-    <div class="col-md-8">
-      <div class="card-body">
-        <h5 class="card-title"><%= record.college %></h5>
-        <p class="card-text">
-          <small class="text-muted"><%= record.location%></small>
-        </p>
-        <p class="card-text">
-          <small class="text-muted"><%= record.description%></small>
-        </p>
-
-        <a class="btn btn-primary" href="/college/<%=record._id %>"
-          >View <%=record.college%></a
-        >
+          <a class="btn btn-primary" href="/college/<%=record._id %>"
+            >View <%=record.college%></a
+          >
+        </div>
       </div>
     </div>
   </div>
+  <% }%>
 </div>
-<% }%>
-<script>
-  const mapboxToken = "<%-process.env.MAPBOX_TOKEN%>";
-   const colleges= { features: <%-JSON.stringify(findData)%>};
-</script>
+  <script>
+    const mapboxToken = "<%-process.env.MAPBOX_TOKEN%>";
+     const colleges= { features: <%-JSON.stringify(findData)%>};
+  </script>
 
-<script src="/javascripts/clusterMap.js"></script>
+  <script src="/javascripts/clusterMap.js"></script>
+</div>
