@@ -31,21 +31,21 @@ module.exports.create_college = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  const newRecord = new collegeModel(req.body.student);
-  newRecord.image = req.files.map((element) => ({
-    path: element.path,
-    filename: element.filename,
-  }));
-  try {
-    newRecord.geometry = geodata.body.features[0].geometry;
-  } catch (e) {
-    return next(new ExpressError("Enter the Valid Location", 401));
-  }
 
-  newRecord.author = req.user;
-  const record = await newRecord.save();
-  req.flash("success", "College Information Added Successfully");
-  return res.redirect(`/college/${record._id}`);
+  if (geodata?.body?.features[0]?.geometry) {
+    const newRecord = new collegeModel(req.body.student);
+    newRecord.image = req.files.map((element) => ({
+      path: element.path,
+      filename: element.filename,
+    }));
+    record.geometry = geodata.body.features[0].geometry;
+    newRecord.author = req.user;
+    const record = await newRecord.save();
+    req.flash("success", "College Information Added Successfully");
+    return res.redirect(`/college/${record._id}`);
+  } else {
+    return next(new ExpressError("enter the valid location"));
+  }
 };
 module.exports.edit_college = async (req, res, next) => {
   const record = await collegeModel.findById(req.params.id);
@@ -53,39 +53,38 @@ module.exports.edit_college = async (req, res, next) => {
 };
 module.exports.update_college = async (req, res, next) => {
   const { id } = req.params;
-  const record = await collegeModel.findByIdAndUpdate(id, req.body.student);
   const geodata = await geocoder
     .forwardGeocode({
       query: req.body.student.location,
       limit: 1,
     })
     .send();
-  try {
+  if (geodata?.body?.features[0]?.geometry) {
+    const record = await collegeModel.findByIdAndUpdate(id, req.body.student);
+
     record.geometry = geodata.body.features[0].geometry;
-  } catch (e) {
-    return next(new ExpressError("Enter the valid Location", 401));
-  }
-  if (req.files.length) {
-    const image = req.files.map((element) => ({
-      path: element.path,
-      filename: element.filename,
-    }));
-    record.image.push(...image);
-  }
-  await record.save();
-  console.log(req.body.deleteImages);
-  if (req.body.deleteImages) {
-    for (let filename of req.body.deleteImages) {
-      cloudinary.uploader.destroy(filename);
+    if (req.files.length) {
+      const image = req.files.map((element) => ({
+        path: element.path,
+        filename: element.filename,
+      }));
+      record.image.push(...image);
+    }
+    await record.save();
+    if (req.body.deleteImages) {
+      for (let filename of req.body.deleteImages) {
+        cloudinary.uploader.destroy(filename);
+      }
+      await collegeModel.updateOne({
+        $pull: { image: { filename: { $in: req.body.deleteImages } } },
+      });
     }
 
-    const data = await collegeModel.updateOne({
-      $pull: { image: { filename: { $in: req.body.deleteImages } } },
-    });
+    req.flash("success", "Information Updated Successfully");
+    return res.redirect(`/college/${id}`);
+  } else {
+    return next(new ExpressError("enter the valid location"));
   }
-
-  req.flash("success", "Information Updated Successfully");
-  return res.redirect(`/college/${id}`);
 };
 module.exports.delete_college = async (req, res, next) => {
   await collegeModel.findByIdAndDelete(req.params.id);
