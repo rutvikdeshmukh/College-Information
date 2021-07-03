@@ -12,6 +12,8 @@ const ejs_mate = require("ejs-mate");
 const UserModel = require("./model/user");
 const session = require("express-session");
 const MongoDbStore = require("connect-mongo");
+// process.env.DB_URL
+// process.env.SECRET
 const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/studentDatabase";
 const secret = process.env.SECRET || "thisisthegreatone";
 const session_config = {
