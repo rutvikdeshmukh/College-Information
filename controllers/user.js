@@ -33,6 +33,6 @@ module.exports.post_login = async (req, res, next) => {
 };
 module.exports.user_logout = async (req, res, next) => {
   req.logOut();
-  req.flash("success", "successfully Logout");
+  req.flash("success", "Successfully Logout");
   return res.redirect("/college");
 };
