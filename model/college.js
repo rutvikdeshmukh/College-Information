@@ -52,7 +52,7 @@ const collegeSchema = new schema(
   opts
 );
 collegeSchema.virtual("properties.popupText").get(function () {
-  return `<strong> <a href="/student/${this._id}"> ${this.college} </a> </strong>
+  return `<strong> <a href="/college/${this._id}"> ${this.college} </a> </strong>
    <p> ${this.description}</p>`;
 });
 
