@@ -2,6 +2,7 @@ const ExpressError = require("../utils/ExpressError");
 const { collegeModel } = require("../model/college");
 const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
+const { expression } = require("joi");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 module.exports.index = async (req, res, next) => {
@@ -35,7 +36,12 @@ module.exports.create_college = async (req, res, next) => {
     path: element.path,
     filename: element.filename,
   }));
-  newRecord.geometry = geodata.body.features[0].geometry;
+  try {
+    newRecord.geometry = geodata.body.features[0].geometry;
+  } catch (e) {
+    return next(new ExpressError("Enter the Valid Location", 401));
+  }
+
   newRecord.author = req.user;
   const record = await newRecord.save();
   req.flash("success", "College Information Added Successfully");
@@ -54,7 +60,11 @@ module.exports.update_college = async (req, res, next) => {
       limit: 1,
     })
     .send();
-  record.geometry = geodata.body.features[0].geometry;
+  try {
+    record.geometry = geodata.body.features[0].geometry;
+  } catch (e) {
+    return next(new ExpressError("Enter the valid Location", 401));
+  }
   if (req.files.length) {
     const image = req.files.map((element) => ({
       path: element.path,
