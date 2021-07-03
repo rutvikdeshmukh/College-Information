@@ -1,6 +1,6 @@
 const ExpressError = require("../utils/ExpressError");
 const { collegeModel } = require("../model/college");
-const { cloudinary } = require("../cloudinary/index");
+const { cloudinary } = require("../cloudinary");
 const mbxGeocoding = require("@mapbox/mapbox-sdk/services/geocoding");
 const { expression } = require("joi");
 const mapBoxToken = process.env.MAPBOX_TOKEN;
