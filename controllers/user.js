@@ -1,6 +1,6 @@
 const userModel = require("../model/user");
 module.exports.user_registration = async (req, res) => {
-  res.render("user/register.ejs");
+  return res.render("user/register.ejs");
 };
 module.exports.post_registration = async (req, res, next) => {
   try {
@@ -12,28 +12,27 @@ module.exports.post_registration = async (req, res, next) => {
         return next(err);
       }
       req.flash("success", "successfully created the account");
-      res.redirect("/college");
+      return res.redirect("/college");
     });
   } catch (e) {
     req.flash("error", e.message);
-    res.redirect("/register");
+    return res.redirect("/register");
   }
 };
 
 module.exports.user_login = async (req, res) => {
-  res.render("user/login.ejs");
+  return res.render("user/login.ejs");
 };
 
 module.exports.post_login = (req, res) => {
-  req.flash("success", "welcome back");
   const returnUrl = req.session.ReturnTo || "/college";
   delete req.session.ReturnTo;
-  res.redirect(returnUrl);
+  req.flash("success", "welcome back");
+  return res.redirect(returnUrl);
+  // console.log("this is data");
 };
 module.exports.user_logout = (req, res) => {
-  if (req.user) {
-    req.logOut();
-    req.flash("success", "successfully logout");
-  }
-  res.redirect("/college");
+  req.logOut();
+  req.flash("success", "successfully logout");
+  return res.redirect("/college");
 };

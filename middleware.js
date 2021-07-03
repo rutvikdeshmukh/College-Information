@@ -9,7 +9,7 @@ const authentication = function (req, res, next) {
     req.flash("error", "you must be login");
     return res.redirect("/login");
   }
-  next();
+  return next();
 };
 
 const validation = function (req, res, next) {
@@ -24,7 +24,7 @@ const validation = function (req, res, next) {
   }
 
   RegChecking(req.body);
-  next();
+  return next();
 };
 
 const reviewValidation = function (req, res, next) {
@@ -37,7 +37,7 @@ const reviewValidation = function (req, res, next) {
       .join(",");
     throw new ExpressError(message, 404);
   }
-  next();
+  return next();
 };
 
 const checkAuthor = async function (req, res, next) {
@@ -47,7 +47,7 @@ const checkAuthor = async function (req, res, next) {
     req.flash("error", "you dont have permission ");
     return res.redirect(`/student/${id}`);
   }
-  next();
+  return next();
 };
 const checkReviewAuthor = async function (req, res, next) {
   const { id, review_id } = req.params;
@@ -56,7 +56,7 @@ const checkReviewAuthor = async function (req, res, next) {
     req.flash("error", "you dont have permission ");
     return res.redirect(`/student/${id}`);
   }
-  next();
+  return next();
 };
 module.exports.authentication = authentication;
 module.exports.reviewValidation = reviewValidation;

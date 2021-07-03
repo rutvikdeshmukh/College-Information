@@ -5,10 +5,10 @@ const mapBoxToken = process.env.MAPBOX_TOKEN;
 const geocoder = mbxGeocoding({ accessToken: mapBoxToken });
 module.exports.index = async (req, res) => {
   const findData = await collegeModel.find({});
-  res.render("student/index.ejs", { findData });
+  return res.render("student/index.ejs", { findData });
 };
 module.exports.new_college = async (req, res) => {
-  res.render("student/new.ejs");
+  return res.render("student/new.ejs");
 };
 module.exports.show_college = async (req, res, next) => {
   const oneRecord = await collegeModel
@@ -20,7 +20,7 @@ module.exports.show_college = async (req, res, next) => {
       },
     })
     .populate("author");
-  res.render("student/show.ejs", { oneRecord });
+  return res.render("student/show.ejs", { oneRecord });
 };
 module.exports.create_college = async (req, res) => {
   const geodata = await geocoder
@@ -29,7 +29,6 @@ module.exports.create_college = async (req, res) => {
       limit: 1,
     })
     .send();
-  console.log("this is geo data", geodata.body.features[0].geometry);
   const newRecord = new collegeModel(req.body.student);
   newRecord.image = req.files.map((element) => ({
     path: element.path,
@@ -38,13 +37,12 @@ module.exports.create_college = async (req, res) => {
   newRecord.geometry = geodata.body.features[0].geometry;
   newRecord.author = req.user;
   const record = await newRecord.save();
-  console.log(record);
   req.flash("success", "Account  has been created successfully");
-  res.redirect(`/college/${record._id}`);
+  return res.redirect(`/college/${record._id}`);
 };
 module.exports.edit_college = async (req, res) => {
   const record = await collegeModel.findById(req.params.id);
-  res.render("student/editForm.ejs", { record });
+  return res.render("student/editForm.ejs", { record });
 };
 module.exports.update_college = async (req, res) => {
   const geodata = await geocoder
@@ -71,10 +69,10 @@ module.exports.update_college = async (req, res) => {
     });
   }
   req.flash("success", "college information updated sucessfully");
-  res.redirect(`/college/${id}`);
+  return res.redirect(`/college/${id}`);
 };
 module.exports.delete_college = async (req, res) => {
   await collegeModel.findByIdAndDelete(req.params.id);
   req.flash("error", "college is deleted successfully");
-  res.redirect("/college");
+  return res.redirect("/college");
 };

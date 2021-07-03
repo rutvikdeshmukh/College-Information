@@ -1,3 +1,6 @@
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
 const express = require("express");
 const app = express();
 app.use(express.urlencoded({ extended: true }));
@@ -9,8 +12,8 @@ const ejs_mate = require("ejs-mate");
 const UserModel = require("./model/user");
 const session = require("express-session");
 const MongoDbStore = require("connect-mongo");
-const dbUrl = process.env.DB_URL;
-const secret = process.env.SECRET;
+const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/studentDatabase";
+const secret = process.env.SECRET || "thisisthegreatone";
 const session_config = {
   secret,
   resave: false,
@@ -74,9 +77,10 @@ app.get("/", (req, res) => {
 app.use("/college", collegeRouter);
 app.use("/college/:id/review", reviewRouter);
 app.use("/", userRouter);
-app.all("*", (req, res, next) => {
-  throw new ExpressError("page is not found", 404);
+app.all("*", async (req, res, next) => {
+  next(new ExpressError("page is not found", 404));
 });
+
 app.use((err, req, res, next) => {
   if (!err.message) {
     err.message = "something went wrong";
@@ -84,14 +88,7 @@ app.use((err, req, res, next) => {
   const message = err.message;
   res.render("student/error.ejs", { message });
 });
-// const port = process.env.PORT;
-// app.listen(port, () => {
-//   console.log(`listening on the port ${port}`);
-// });
-
-app.set("port", process.env.PORT || 5000);
-
-// Start node server
-app.listen(app.get("port"), function () {
-  console.log("Node server is running on port " + app.get("port"));
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`listening on the port ${port}`);
 });

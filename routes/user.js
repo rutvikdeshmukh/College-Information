@@ -18,8 +18,8 @@ router
       failureFlash: true,
       failureRedirect: "/login",
     }),
-    catchAsync(user.post_login)
+    user.post_login
   );
 
-router.get("/logout", catchAsync(user.user_logout));
+router.get("/logout", user.user_logout);
 module.exports = router;
