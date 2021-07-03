@@ -87,6 +87,7 @@ app.use((err, req, res, next) => {
   const message = err.message;
   res.render("student/error.ejs", { message });
 });
-app.listen(3000, () => {
-  console.log("listening on the port 3000");
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
+  console.log(`listening on the port ${port}`);
 });
