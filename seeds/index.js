@@ -12,12 +12,12 @@ mongoose
     console.log("connection is rejected", err);
   });
 
-const userModel = require("../model/user");
-const { collegeModel } = require("../model/college");
-const { reviewModel } = require("../model/review");
-userModel.deleteMany().then((data) => {
-  console.log(data);
-});
+// const userModel = require("../model/user");
+// const { collegeModel } = require("../model/college");
+// const { reviewModel } = require("../model/review");
+// collegeModel.find({}).then((data) => {
+//   console.log(data);
+// });
 // const save_db = async function () {
 //   for (let i = 0; i < 50; i++) {
 //     const record = new collegeModel({

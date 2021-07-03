@@ -72,12 +72,14 @@ module.exports.update_college = async (req, res, next) => {
     }
     await record.save();
     if (req.body.deleteImages) {
+      console.log(req.body.deleteImages);
       for (let filename of req.body.deleteImages) {
         cloudinary.uploader.destroy(filename);
       }
-      await collegeModel.updateOne({
+      const data = await collegeModel.updateOne({
         $pull: { image: { filename: { $in: req.body.deleteImages } } },
       });
+      console.log(data);
     }
 
     req.flash("success", "Information Updated Successfully");
