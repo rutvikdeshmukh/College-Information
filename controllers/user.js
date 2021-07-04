@@ -20,7 +20,7 @@ module.exports.post_registration = async (req, res, next) => {
   }
 };
 
-module.exports.user_login = async (req, res) => {
+module.exports.user_login = async (req, res, next) => {
   return res.render("user/login.ejs");
 };
 
