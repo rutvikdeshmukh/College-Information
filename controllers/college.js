@@ -53,6 +53,8 @@ module.exports.edit_college = async (req, res, next) => {
   return res.render("student/editForm.ejs", { record });
 };
 module.exports.update_college = async (req, res, next) => {
+  console.log("deleted images");
+  console.log(req.body.deleteImages);
   const { id } = req.params;
   const geodata = await geocoder
     .forwardGeocode({
@@ -62,7 +64,6 @@ module.exports.update_college = async (req, res, next) => {
     .send();
   if (geodata?.body?.features[0]?.geometry) {
     const record = await collegeModel.findByIdAndUpdate(id, req.body.student);
-
     record.geometry = geodata.body.features[0].geometry;
     if (req.files.length) {
       const image = req.files.map((element) => ({
@@ -71,14 +72,18 @@ module.exports.update_college = async (req, res, next) => {
       }));
       record.image.push(...image);
     }
+    console.log("database images");
+    console.log(record.image);
     await record.save();
     if (req.body.deleteImages) {
       for (let filename of req.body.deleteImages) {
-        await cloudinary.uploader.destroy(filename);
+        const data = await cloudinary.uploader.destroy(filename);
+        console.log(data);
       }
-      await collegeModel.updateOne({
+      const updateddata = await collegeModel.updateMany({
         $pull: { image: { filename: { $in: req.body.deleteImages } } },
       });
+      console.log(updateddata);
     }
 
     req.flash("success", "Information Updated Successfully");
