@@ -4,13 +4,12 @@ const catchAsync = require("../utils/catchAsync");
 const { authentication, reviewValidation } = require("../middleware");
 const reviews = require("../controllers/reviews");
 const { checkReviewAuthor } = require("../middleware");
+const college = require("../controllers/college");
 
-router.post(
-  "/",
-  authentication,
-  reviewValidation,
-  catchAsync(reviews.post_review)
-);
+router
+  .route("/")
+  .get(catchAsync(college.show_college))
+  .post(authentication, reviewValidation, catchAsync(reviews.post_review));
 router.delete(
   "/:review_id/delete",
   authentication,

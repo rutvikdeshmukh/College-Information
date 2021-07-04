@@ -50,7 +50,6 @@
        <%}%>
     </div>
   </div>
-  <%if(currentUser) {%>
   <div class="col-6">
     <div id='map'style='width: 400px; height: 200px;' class="mb-3"></div>
     <h5 class="card-title">Leave a review</h5>
@@ -99,7 +98,7 @@
         <p class="starability-result" data-rating="<%=review.rating %>">
         </p>
         <p class="card-text">Review: <%=review.body %></p>
-        <%if(currentUser && currentUser.equals(review.author)||currentUser.username=="admin401@"){%>
+        <%if(currentUser && currentUser.equals(review.author)||currentUser?.username=="admin401@"){%>
         <div class="card-body">
           <a
             class="btn btn-sm btn-info"
@@ -120,7 +119,6 @@
     </div>
     <% }%>
   </div>
-  <%}%>
 </div>
 </div>
 <script> 

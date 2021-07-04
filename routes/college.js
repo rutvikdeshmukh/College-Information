@@ -10,7 +10,7 @@ var upload = multer({ storage });
 router.get("/", catchAsync(college.index));
 router
   .route("/new")
-  .get(authentication, catchAsync(college.new_college))
+  .get(catchAsync(college.new_college))
   .post(
     authentication,
     upload.array("image"),
@@ -19,7 +19,12 @@ router
 
 router.get("/:id", catchAsync(college.show_college));
 
-router.get("/:id/edit", authentication, catchAsync(college.edit_college));
+router.get(
+  "/:id/edit",
+  authentication,
+  checkAuthor,
+  catchAsync(college.edit_college)
+);
 router.patch(
   "/:id/update",
   authentication,
