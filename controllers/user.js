@@ -1,5 +1,5 @@
 const userModel = require("../model/user");
-module.exports.user_registration = async (req, res) => {
+module.exports.user_registration = async (req, res,next) => {
   return res.render("user/register.ejs");
 };
 module.exports.post_registration = async (req, res, next) => {
