@@ -49,6 +49,7 @@
         <div class="valid-feedback">Looks good!</div>
         <div class="invalid-feedback">Please choose a description.</div>
       </div>
+      <% if(currentUser){%>
       <div class="mb-3">
         <div class="custom-file">
           <input
@@ -65,7 +66,7 @@
           <div class="invalid-feedback">Please Upload the Image</div>
         </div>
       </div>
-
+      <%}%>
       <div class="mb-3">
         <button class="btn btn-success">Add College</button>
       </div>
