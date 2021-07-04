@@ -32,7 +32,7 @@
         <li class="list-group-item text-muted"><%= oneRecord.location%></li>
         <li class="list-group-item text-muted">Added by <%= oneRecord.author.username%></li>
       </ul>
-       <%if(currentUser && currentUser._id.equals(oneRecord.author._id) || currentUser.username=="admin401@") {%>
+       <%if((currentUser) && (currentUser._id.equals(oneRecord.author._id) || currentUser?.username=="admin401@")) {%>
       <div class="card-body">
         <a
           class="card-link btn btn-info"
