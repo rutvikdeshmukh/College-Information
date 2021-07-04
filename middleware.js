@@ -7,6 +7,7 @@ const authentication = function (req, res, next) {
   if (!req.isAuthenticated()) {
     req.session.ReturnTo = req.originalUrl;
     req.flash("error", "You must be Login User");
+    console.log(req.session.ReturnTo);
     return res.redirect("/login");
   }
   next();
