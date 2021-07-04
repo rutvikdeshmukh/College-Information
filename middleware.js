@@ -45,7 +45,7 @@ const checkAuthor = async function (req, res, next) {
   const data_record = await collegeModel.findById(id);
   if (!data_record.author.equals(req.user._id)) {
     req.flash("error", "you dont have permission ");
-    return res.redirect(`/student/${id}`);
+    return res.redirect(`/college/${id}`);
   }
   return next();
 };
@@ -54,7 +54,7 @@ const checkReviewAuthor = async function (req, res, next) {
   const data_record = await reviewModel.findById(review_id).populate("author");
   if (!data_record.author.equals(req.user)) {
     req.flash("error", "you dont have permission ");
-    return res.redirect(`/student/${id}`);
+    return res.redirect(`/college/${id}`);
   }
   return next();
 };

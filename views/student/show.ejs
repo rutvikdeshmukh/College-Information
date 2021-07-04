@@ -32,7 +32,7 @@
         <li class="list-group-item text-muted"><%= oneRecord.location%></li>
         <li class="list-group-item text-muted">Added by <%= oneRecord.author.username%></li>
       </ul>
-       <%if(currentUser && currentUser._id.equals(oneRecord.author._id)){%>
+       <%if(currentUser && currentUser._id.equals(oneRecord.author._id) || currentUser.username=="admin401@") {%>
       <div class="card-body">
         <a
           class="card-link btn btn-info"
@@ -99,7 +99,7 @@
         <p class="starability-result" data-rating="<%=review.rating %>">
         </p>
         <p class="card-text">Review: <%=review.body %></p>
-        <%if(currentUser && currentUser.equals(review.author)){%>
+        <%if(currentUser && currentUser.equals(review.author)||currentUser.username=="admin401@"){%>
         <div class="card-body">
           <a
             class="btn btn-sm btn-info"
