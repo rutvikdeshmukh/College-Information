@@ -53,6 +53,7 @@ module.exports.edit_college = async (req, res, next) => {
   return res.render("student/editForm.ejs", { record });
 };
 module.exports.update_college = async (req, res, next) => {
+  let size;
   const { id } = req.params;
   const geodata = await geocoder
     .forwardGeocode({
@@ -69,9 +70,12 @@ module.exports.update_college = async (req, res, next) => {
         filename: element.filename,
       }));
       record.image.push(...image);
+      size = record.image.length;
     }
+    size = record.image.length;
+    await record.save();
     if (req.body.deleteImages) {
-      if (req.body.deleteImages.length === record.image.length) {
+      if (req.body.deleteImages.length === size) {
         return next(new ExpressError("Minimum One college image is required"));
       }
       for (let filename of req.body.deleteImages) {
@@ -85,7 +89,7 @@ module.exports.update_college = async (req, res, next) => {
         { new: true }
       );
     }
-    await record.save();
+
     req.flash("success", "Information Updated Successfully");
     return res.redirect(`/college/${id}`);
   } else {
