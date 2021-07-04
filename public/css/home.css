@@ -1,7 +1,11 @@
 body {
   height: 100vh;
   background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
-    url("https://source.unsplash.com/collection/2399460&auto=format&fit=crop&w=1950&q=80");
+    url("https://res.cloudinary.com/dupzg68po/image/upload/f_auto/v1625388263/homepage/yingchou-han-IJrIeCs3D4g-unsplash_rihu2s.jpg");
+
+  /* https://source.unsplash.com/collection/2399460&auto=format&fit=crop&w=1950&q=80 */
+
+  /* https://res.cloudinary.com/dupzg68po/image/upload/v1625388263/homepage/yingchou-han-IJrIeCs3D4g-unsplash_rihu2s&auto=format&fit=crop&w=1950&q=80.jpg */
 
   /* https://source.unsplash.com/collection/9045118/1600x900 */
   /* https://images.unsplash.com/photo-1559521783-1d1599583485?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80 */
