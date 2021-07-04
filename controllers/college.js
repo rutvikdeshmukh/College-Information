@@ -38,6 +38,7 @@ module.exports.create_college = async (req, res, next) => {
       path: element.path,
       filename: element.filename,
     }));
+
     newRecord.geometry = geodata.body.features[0].geometry;
     newRecord.author = req.user;
     const record = await newRecord.save();
@@ -72,14 +73,12 @@ module.exports.update_college = async (req, res, next) => {
     }
     await record.save();
     if (req.body.deleteImages) {
-      console.log(req.body.deleteImages);
       for (let filename of req.body.deleteImages) {
-        cloudinary.uploader.destroy(filename);
+        await cloudinary.uploader.destroy(filename);
       }
-      const data = await collegeModel.updateOne({
+      await collegeModel.updateOne({
         $pull: { image: { filename: { $in: req.body.deleteImages } } },
       });
-      console.log(data);
     }
 
     req.flash("success", "Information Updated Successfully");
