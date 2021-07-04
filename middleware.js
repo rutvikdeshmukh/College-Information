@@ -9,7 +9,7 @@ const authentication = function (req, res, next) {
     req.flash("error", "You must be Login User");
     return res.redirect("/login");
   }
-  return next();
+  next();
 };
 
 const validation = function (req, res, next) {
