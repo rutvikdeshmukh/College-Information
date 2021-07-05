@@ -29,7 +29,6 @@ module.exports.post_login = async (req, res, next) => {
   delete req.session.ReturnTo;
   req.flash("success", "Welcome Back");
   return res.redirect(returnUrl);
-  // console.log("this is data");
 };
 module.exports.user_logout = async (req, res, next) => {
   req.logOut();

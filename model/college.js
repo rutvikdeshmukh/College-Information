@@ -8,7 +8,7 @@ const imageSchema = new schema({
   filename: String,
 });
 imageSchema.virtual("thumbnail").get(function () {
-  return this.path.replace("/upload", "/upload/w_200");
+  return this.path.replace("/upload", "/upload/w_300");
 });
 
 const collegeSchema = new schema(

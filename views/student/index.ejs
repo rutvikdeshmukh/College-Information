@@ -11,7 +11,7 @@
       <%if(record.image.length) {%>
       <div class="col-md-4">
         <img
-          src="<%=record.image[0].path%>"
+          src="<%=record.image[0].thumbnail%>"
           class="img-fluid img-thumbnail"
           alt=""
         />
@@ -36,10 +36,9 @@
   </div>
   <% }%>
 </div>
-  <script>
-    const mapboxToken = "<%-process.env.MAPBOX_TOKEN%>";
-     const colleges= { features: <%-JSON.stringify(findData)%>};
-  </script>
+<script>
+  const mapboxToken = "<%-process.env.MAPBOX_TOKEN%>";
+   const colleges= { features: <%-JSON.stringify(findData)%>};
+</script>
 
-  <script src="/javascripts/clusterMap.js"></script>
-</div>
+<script src="/javascripts/clusterMap.js"></script>
