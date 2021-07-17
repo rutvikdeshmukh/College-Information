@@ -25,7 +25,6 @@ module.exports.show_college = async (req, res, next) => {
   return res.render("student/show.ejs", { oneRecord });
 };
 module.exports.create_college = async (req, res, next) => {
-  console.log(req.files);
   const geodata = await geocoder
     .forwardGeocode({
       query: req.body.student.location,
