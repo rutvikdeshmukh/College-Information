@@ -25,6 +25,7 @@ module.exports.show_college = async (req, res, next) => {
   return res.render("student/show.ejs", { oneRecord });
 };
 module.exports.create_college = async (req, res, next) => {
+  console.log(req.files);
   const geodata = await geocoder
     .forwardGeocode({
       query: req.body.student.location,
@@ -72,7 +73,7 @@ module.exports.update_college = async (req, res, next) => {
     }
     const savedRecord = await record.save();
     if (req.body.deleteImages) {
-      if (req.body.deleteImages.length === savedRecord.length) {
+      if (req.body.deleteImages.length === savedRecord.image.length) {
         return next(new ExpressError("Minimum One college image is required"));
       }
       for (let filename of req.body.deleteImages) {
